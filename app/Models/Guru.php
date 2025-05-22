@@ -6,5 +6,15 @@ use Illuminate\Database\Eloquent\Model;
 
 class Guru extends Model
 {
-    //
+    protected $fillable = [
+        'nip',
+        'nama',
+        'alamat',
+        'kontak',
+        'email',
+    ];
+    public function pkl()
+    {
+        return $this->hasMany(Pkl::class);
+    }
 }

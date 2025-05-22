@@ -13,7 +13,13 @@ return new class extends Migration
     {
         Schema::create('pkls', function (Blueprint $table) {
             $table->id();
+            $table->date('mulai');
+            $table->date('selesai');
             $table->timestamps();
+
+            $table->foreignId('siswa_id')->references('id')->on('siswas')->onDelete('cascade');
+            $table->foreignId('guru_id')->references('id')->on('gurus')->onDelete('cascade');
+            $table->foreignId('industri_id')->references('id')->on('industris');
         });
     }
 

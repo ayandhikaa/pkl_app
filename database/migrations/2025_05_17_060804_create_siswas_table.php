@@ -13,6 +13,14 @@ return new class extends Migration
     {
         Schema::create('siswas', function (Blueprint $table) {
             $table->id();
+            $table->string('nama');
+            $table->string('nis')->unique();
+            $table->enum('gender', ['L', 'P']);
+            $table->string('alamat');
+            $table->string('kontak');
+            $table->string('email')->unique();
+            $table->boolean('status_pkl')->default(false);
+            $table->string('foto')->nullable();
             $table->timestamps();
         });
     }

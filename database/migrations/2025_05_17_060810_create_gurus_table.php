@@ -13,6 +13,12 @@ return new class extends Migration
     {
         Schema::create('gurus', function (Blueprint $table) {
             $table->id();
+            $table->string('nama');
+            $table->string('nip')->unique();
+            $table->enum('gender', ['L', 'P']);
+            $table->string('alamat');
+            $table->string('kontak');
+            $table->string('email')->unique();
             $table->timestamps();
         });
     }
