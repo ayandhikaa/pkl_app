@@ -15,6 +15,7 @@ use Livewire\Component;
 #[Layout('components.layouts.auth')]
 class Login extends Component
 {
+
     #[Validate('required|string|email')]
     public string $email = '';
 
@@ -22,6 +23,17 @@ class Login extends Component
     public string $password = '';
 
     public bool $remember = false;
+
+    public $siswa_login;
+
+    public function mount(): void
+    {
+        if (!$this->siswa_login) {
+            $this->siswa_login = Auth::user();
+            session()->flash('from_login_attempt', true);
+            session()->flash('toast_error', 'Akun Anda tidak ditemukan sebagai siswa.');
+        }
+    }
 
     /**
      * Handle an incoming authentication request.

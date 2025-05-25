@@ -34,7 +34,7 @@
                     
                         <!-- Button Tambah Data -->
                             <div class="w-full md:w-auto text-right">
-                            @if(!$pkls->where('siswa_id', $siswa_login->id)->count())
+                            @if($siswa_login && !$pkls->where('siswa_id', $siswa_login->id)->count())
                                 <button wire:click="create()"
                                 class="bg-green-600 text-white px-4 py-2 rounded-lg shadow hover:bg-green-700 transition duration-200"
                                 >

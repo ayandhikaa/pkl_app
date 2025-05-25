@@ -9,7 +9,7 @@ use Livewire\Component;
 use App\Models\Industri;
 use Livewire\WithPagination;
 use Illuminate\Support\Facades\DB;
-use Livewire\Volt\Compilers\Mount;
+use Livewire\Volt\Compilers\mount;
 use Illuminate\Support\Facades\Auth;
 
 class Index extends Component
@@ -34,6 +34,15 @@ class Index extends Component
     
         if (Auth::user()->role == 'siswa' && $this->siswa_login) {
             $this->siswa_id = $this->siswa_login->id;
+        } elseif (Auth::user()->role == 'guru') {
+            $this->guru_id = Auth::user()->guru->id;
+        }
+
+        if (!$this->siswa_login) {
+            Auth::logout(); // logout user
+            return redirect()->route('login')->with('akun_belum_terverifikasi', 'Akun Anda belum terverifikasi.');
+
+            
         }
     }
     

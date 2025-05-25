@@ -43,6 +43,19 @@
         <div class="flex items-center justify-end">
             <flux:button variant="primary" type="submit" class="w-full">{{ __('Log in') }}</flux:button>
         </div>
+        @if (session('akun_belum_terverifikasi'))
+            <div 
+                x-data="{ show: true }" 
+                x-init="setTimeout(() => show = false, 4000)" 
+                x-show="show"
+                x-transition
+                class="fixed top-5 right-5 z-50 bg-red-500 text-white px-4 py-2 rounded shadow-lg"
+            >
+                {{ session('akun_belum_terverifikasi') }}
+            </div>
+        @endif
+    
+
     </form>
 
     @if (Route::has('register'))
