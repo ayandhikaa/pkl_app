@@ -14,17 +14,17 @@ class Pkl extends Model
         'guru_id',
     ];
 
-    public function siswa()
+    public function siswas()
     {
         return $this->belongsTo(Siswa::class);
     }
 
-    public function industri()
+    public function industris()
     {
         return $this->belongsTo(Industri::class);
     }
 
-    public function guru()
+    public function gurus()
     {
         return $this->belongsTo(Guru::class);
     }

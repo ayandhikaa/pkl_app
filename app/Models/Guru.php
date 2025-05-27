@@ -13,7 +13,7 @@ class Guru extends Model
         'kontak',
         'email',
     ];
-    public function pkl()
+    public function pkls()
     {
         return $this->hasMany(Pkl::class);
     }

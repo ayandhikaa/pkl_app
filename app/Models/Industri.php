@@ -16,7 +16,7 @@ class Industri extends Model
         'bidang_usaha',
     ];
 
-    public function pkl()
+    public function pkls()
     {
         return $this->hasMany(Pkl::class);
     }

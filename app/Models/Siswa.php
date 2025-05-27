@@ -17,7 +17,7 @@ class Siswa extends Model
         'email',
     ];
 
-    public function pkl()
+    public function pkls()
     {
         return $this->hasMany(Pkl::class);
     }

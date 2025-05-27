@@ -40,9 +40,7 @@ class Index extends Component
 
         if (!$this->siswa_login) {
             Auth::logout(); // logout user
-            return redirect()->route('login')->with('akun_belum_terverifikasi', 'Akun Anda belum terverifikasi.');
-
-            
+            return redirect()->route('login')->with('akun_belum_terverifikasi', 'Akun Anda belum terverifikasi.');   
         }
     }
     
