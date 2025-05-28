@@ -5,6 +5,7 @@ use App\Livewire\Settings\Password;
 use Illuminate\Support\Facades\App;
 use App\Livewire\Settings\Appearance;
 use Illuminate\Support\Facades\Route;
+use App\Livewire\Fe\Industri\Index;
 
 Route::get('/', function () {
     return view('welcome');
