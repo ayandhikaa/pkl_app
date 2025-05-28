@@ -2,6 +2,9 @@
 
 namespace App\Models;
 
+use App\Models\Guru;
+use App\Models\Siswa;
+use App\Models\Industri;
 use Illuminate\Database\Eloquent\Model;
 
 class Pkl extends Model
@@ -14,19 +17,19 @@ class Pkl extends Model
         'guru_id',
     ];
 
-    public function siswas()
+    public function siswa()
     {
-        return $this->belongsTo(Siswa::class);
+        return $this->belongsTo(Siswa::class, 'siswa_id');
     }
 
-    public function industris()
+    public function industri()
     {
-        return $this->belongsTo(Industri::class);
+        return $this->belongsTo(Industri::class, 'industri_id');
     }
 
-    public function gurus()
+    public function guru()
     {
-        return $this->belongsTo(Guru::class);
+        return $this->belongsTo(Guru::class, 'guru_id');
     }
 
 }

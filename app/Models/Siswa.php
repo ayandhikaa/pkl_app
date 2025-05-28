@@ -10,14 +10,14 @@ class Siswa extends Model
         'nis',
         'nama',
         'gender',
-        'kelas',
-        'jurusan',
         'alamat',
         'kontak',
         'email',
+        'status_pkl',
+        'foto',
     ];
 
-    public function pkls()
+    public function pkl()
     {
         return $this->hasMany(Pkl::class);
     }

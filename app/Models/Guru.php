@@ -10,6 +10,7 @@ class Guru extends Model
         'nip',
         'nama',
         'alamat',
+        'gender',
         'kontak',
         'email',
     ];

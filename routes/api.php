@@ -1,18 +1,21 @@
 <?php
 
+use App\Livewire\Auth\Login;
 use Illuminate\Http\Request;
-use app\Livewire\Fe\Guru;
 use Illuminate\Support\Facades\Route;
-use  App\Livewire\Fe\Siswa;
-use  App\Livewire\Fe\Industri;
-use  App\Livewire\Fe\Pkl;
+use App\Http\Controllers\ApiPklController;
+use App\Http\Controllers\ApiGuruController;
+use App\Http\Controllers\ApiSiswaController;
+use App\Http\Controllers\ApiIndustriController;
 
 Route::get('/user', function (Request $request) {
     return $request->user();
 })->middleware('auth:sanctum');
 
 Route::middleware('auth:sanctum')->group(function () {
-    Route::apiResource('guru', 'app\Livewire\Fe\Guru\Index');
-    Route::apiResource('siswa', 'App\Livewire\Fe\Siswa\Index');
-    Route::apiResource('industri', 'app\Livewire\Fe\Industri\Index');
+    Route::apiResource('guru', ApiGuruController::class);
+    Route::apiResource('siswa', ApiSiswaController::class);
+    Route::apiResource('industri', ApiIndustriController::class);
+    Route::apiResource('pkl', ApiPklController::class);
+    Route::post('login', Login::class);
 });

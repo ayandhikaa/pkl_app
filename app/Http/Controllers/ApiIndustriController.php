@@ -26,11 +26,13 @@ class ApiIndustriController extends Controller
     {
         $industri = new industri();
         $industri->nama = $request->nama;
-        $industri->nip = $request->nip;
+        $industri->website = $request->website;
         $industri->gender = $request->gender;
         $industri->alamat = $request->alamat;
         $industri->kontak = $request->kontak;
         $industri->email = $request->email;
+        $industri->bidang_usaha = $request->bidang_usaha;
+        $industri->foto = $request->foto;
         $industri->save();
         return response()->json([
             'status' => 'success',
@@ -63,11 +65,13 @@ class ApiIndustriController extends Controller
     {
         $industri = Industri::find($id);
         $industri->nama = $request->nama;
-        $industri->nip = $request->nip;
+        $industri->website = $request->website;
         $industri->gender = $request->gender;
         $industri->alamat = $request->alamat;
         $industri->kontak = $request->kontak;
         $industri->email = $request->email;
+        $industri->bidang_usaha = $request->bidang_usaha;
+        $industri->foto = $request->foto;
         $industri->save();
         return response()->json([
             'status' => 'success',

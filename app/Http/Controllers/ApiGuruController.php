@@ -50,11 +50,13 @@ class ApiGuruController extends Controller
                 'message' => 'Guru not found',
             ], 404);
         }
+    
         return response()->json([
             'status' => 'success',
             'data' => $guru,
         ], 200);
     }
+    
 
     /**
      * Update the specified resource in storage.

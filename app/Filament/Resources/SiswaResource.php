@@ -98,6 +98,7 @@ class SiswaResource extends Resource
                 Tables\Columns\ImageColumn::make('foto')
                     ->disk('public')
                     ->height(50)
+                    ->rounded()
                     ->searchable(),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()
