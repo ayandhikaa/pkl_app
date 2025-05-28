@@ -1,8 +1,9 @@
 <?php
 
-use App\Livewire\Settings\Appearance;
-use App\Livewire\Settings\Password;
 use App\Livewire\Settings\Profile;
+use App\Livewire\Settings\Password;
+use Illuminate\Support\Facades\App;
+use App\Livewire\Settings\Appearance;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -13,9 +14,7 @@ Route::view('dashboard', 'dashboard')
     ->middleware(['auth', 'verified'])
     ->name('dashboard');
 
-Route::view('industri', 'industri')
-    ->middleware(['auth', 'verified'])
-    ->name('industri');
+    Route::get('/industri', Index::class)->name('industri');
 
 Route::middleware(['auth'])->group(function () {
     Route::redirect('settings', 'settings/profile');
