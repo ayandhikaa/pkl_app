@@ -2,16 +2,17 @@
 
 namespace App\Filament\Resources;
 
-use App\Filament\Resources\IndustriResource\Pages;
-use App\Filament\Resources\IndustriResource\RelationManagers;
-use App\Models\Industri;
 use Filament\Forms;
-use Filament\Forms\Form;
-use Filament\Resources\Resource;
 use Filament\Tables;
+use App\Models\Industri;
+use Filament\Forms\Form;
 use Filament\Tables\Table;
+use Filament\Resources\Resource;
+use Filament\Forms\Components\FileUpload;
 use Illuminate\Database\Eloquent\Builder;
+use App\Filament\Resources\IndustriResource\Pages;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use App\Filament\Resources\IndustriResource\RelationManagers;
 
 class IndustriResource extends Resource
 {
@@ -44,6 +45,19 @@ class IndustriResource extends Resource
                 Forms\Components\TextInput::make('website')
                     ->required()
                     ->maxLength(255),
+                FileUpload::make('foto')
+                    ->label('Foto Siswa')
+                    ->image()
+                    ->acceptedFileTypes(['image/jpeg', 'image/png', 'image/webp'])
+                    ->directory('siswa-fotos')
+                    ->visibility('public')
+                    ->imagePreviewHeight('150')
+                    ->loadingIndicatorPosition('left')
+                    ->uploadProgressIndicatorPosition('left')
+                    ->removeUploadedFileButtonPosition('right')
+                    ->downloadable()
+                    ->openable()
+                    ->columnSpanFull(),
             ]);
     }
 
@@ -62,6 +76,11 @@ class IndustriResource extends Resource
                 Tables\Columns\TextColumn::make('email')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('website')
+                    ->searchable(),
+                Tables\Columns\ImageColumn::make('foto')
+                    ->disk('public')
+                    ->height(50)
+                    ->rounded()
                     ->searchable(),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()

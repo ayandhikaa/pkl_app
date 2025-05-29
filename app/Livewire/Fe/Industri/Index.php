@@ -7,16 +7,18 @@ use App\Models\Siswa;
 use Livewire\Component;
 use App\Models\Industri;
 use Livewire\WithPagination;
+use Livewire\WithFileUploads;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 
 class Index extends Component
 {
-    public $indNama,$indBidUs,$indAlmt,$indKontak,$indEmail,$indWebsite;
+    public $indNama,$indBidUs,$indAlmt,$indKontak,$indEmail,$indWebsite,$indFoto;
+    public $siswa_id, $industri_id, $guru_id, $mulai, $selesai;
 
     public $isOpen = 0;
 
-    use WithPagination;
+    use WithPagination, WithFileUploads;
 
     public $rowPerPage=3;
     public $search;
@@ -30,14 +32,14 @@ class Index extends Component
     public function render()
     {
         return view('livewire.fe.industri.index',[
-            'industris' => Industri::latest()->paginate($this->rowPerPage),
             'industris' => $this->search === NULL ?
-                        Industri::latest()->paginate($this->rowPerPage) :
-                        Industri::latest()->where('nama', 'like', '%' . $this->search . '%')
-                                          ->orWhere('bidang_usaha', 'like', '%' . $this->search . '%')
-                                          ->orWhere('alamat', 'like', '%' . $this->search . '%')
-                                          ->paginate($this->rowPerPage),
-                                          
+                Industri::latest()->paginate($this->rowPerPage) :
+                Industri::latest()
+                    ->where('nama', 'like', '%' . $this->search . '%')
+                    ->orWhere('bidang_usaha', 'like', '%' . $this->search . '%')
+                    ->orWhere('alamat', 'like', '%' . $this->search . '%')
+                    ->paginate($this->rowPerPage),
+                              
             'siswa_login'=>Siswa::where('email','=',$this->userMail)->first(),
         ]);
     }
@@ -66,26 +68,33 @@ class Index extends Component
         $this->indKontak        ='';
         $this->indEmail      = '';
         $this->indWebsite      = '';
+        $this->indFoto      = '';
     }
 
     public function store()
     {
+        $this->siswa_id = Siswa::where('email', $this->userMail)->first()->id ?? null;
         $this->validate([
-                'siswa_id'       => 'required',
                 'industri_id'    => 'required',
                 'guru_id'        => 'required',
                 'mulai'         => 'required|date',
                 'selesai'       => 'required|date|after:mulai',
+                'indFoto'      => 'nullable|image|max:2048',
             ]);
+        
+        $pathFoto = null;
+
+        if ($this->indFoto) {
+            $pathFoto = $this->indFoto->store('foto-industri', 'public');
+        }   
         
 
         DB::beginTransaction();
         
         try {
-            $siswa = Siswa::find($this->siswaId);
+            $siswa = Siswa::find($this->siswa_id);
 
             if ($siswa->status_pkl) {
-                // session()->flash('error', 'Transaksi dibatalkan: Siswa sudah melapor.');
 
                 DB::rollBack();
                 $this->closeModal();
@@ -100,6 +109,7 @@ class Index extends Component
                 'guru_id'       => $this->guru_id,
                 'mulai'         => $this->mulai,
                 'selesai'       => $this->selesai,
+                'foto'          => $pathFoto,
             ]);
 
             // Update status_lapor siswa
@@ -116,9 +126,8 @@ class Index extends Component
         }
         catch (\Exception $e) {
             DB::rollBack();
-            // session()->flash('error', 'Terjadi kesalahan: ' . $e->getMessage());
             $this->closeModal();
-            return redirect()->route('dashboard')->with('error', 'Terjadi kesalahan:');
+            return redirect()->route('dashboard')->with('error', 'Terjadi kesalahan: ' . $e->getMessage());
         }
     }
 }
