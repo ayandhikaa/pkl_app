@@ -26,22 +26,28 @@ class Index extends Component
     public $userMail;
 
     public function mount() {
+        $user = Auth::user();
         $this->userMail = Auth::user()->email;
-        $this->siswa_login = Siswa::where('email','=',$this->userMail)->first();
-        $this->industris = Industri::all();
-        $this->gurus = Guru::all();
+
+        if ($user->hasRole('siswa')) {
+            $this->siswa_login = Siswa::where('email', $this->userMail)->first();
         
-    
-        if (Auth::user()->role == 'siswa' && $this->siswa_login) {
+            if (!$this->siswa_login) {
+                // Email tidak ditemukan di tabel siswa (ini seharusnya sudah dicegah oleh middleware)
+                session()->flash('akun_belum_terverifikasi', 'Email tidak terdaftar sebagai siswa.');
+                redirect('/login')->send(); // pakai ->send() karena ini dalam lifecycle Livewire
+                return;
+            }
+        
             $this->siswa_id = $this->siswa_login->id;
-        } elseif (Auth::user()->role == 'guru') {
-            $this->guru_id = Auth::user()->guru->id;
         }
 
-        if (!$this->siswa_login) {
-            Auth::logout(); // logout user
-            return redirect()->route('login')->with('akun_belum_terverifikasi', 'Akun Anda belum terverifikasi.');   
+        if ($user->hasRole('guru')) {
+            $this->guru_id = optional($user->guru)->id;
         }
+        
+        $this->industris = Industri::all();
+        $this->gurus = Guru::all();
     }
     
     

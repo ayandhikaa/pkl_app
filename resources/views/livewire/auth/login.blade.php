@@ -45,22 +45,21 @@
 
             <!-- Submit Button -->
             <div class="flex items-center justify-end">
-                <flux:button variant="primary" type="submit" class="w-full bg-blue-600">
+                <flux:button variant="primary" type="submit" class="w-full bg-blue-600 dark:text-white hover:bg-blue-700 dark:hover:bg-blue-500">
                     {{ __('Log in') }}
                 </flux:button>
             </div>
 
-            <!-- Akun belum terverifikasi -->
             @if (session('akun_belum_terverifikasi'))
-                <div 
-                    x-data="{ show: true }" 
-                    x-init="setTimeout(() => show = false, 4000)" 
-                    x-show="show"
-                    x-transition
-                    class="fixed top-5 right-5 z-50 bg-red-500 text-white px-4 py-2 rounded shadow-lg"
-                >
-                    {{ session('akun_belum_terverifikasi') }}
-                </div>
+            <div x-data="{ show: true }" x-init="setTimeout(() => show = false, 4000)" x-show="show" x-transition class="fixed top-5 right-5 z-50 bg-red-500 text-white px-4 py-2 rounded shadow-lg" >
+            {{ session('akun_belum_terverifikasi') }}
+            </div>
+            @endif
+            
+            @if (session('akses_ditolak'))
+            <div x-data="{ show: true }" x-init="setTimeout(() => show = false, 4000)" x-show="show" x-transition class="fixed top-20 right-5 z-50 bg-red-600 text-white px-4 py-2 rounded shadow-lg" >
+            {{ session('akses_ditolak') }}
+            </div>
             @endif
         </form>
 

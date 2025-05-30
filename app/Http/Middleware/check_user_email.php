@@ -25,7 +25,7 @@ class check_user_email
 
             if (!$exists) {
                 Auth::logout(); // Logout user jika email tidak cocok
-                return redirect('/login')->with('error', 'Email tidak terdaftar sebagai siswa.');
+                return redirect('/login')->with('akun_belum_terverifikasi', 'Email tidak terdaftar sebagai siswa.');
             }
         }
         
