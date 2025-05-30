@@ -13,7 +13,7 @@ use Illuminate\Support\Facades\Auth;
 
 class Index extends Component
 {
-    public $indNama,$indBidUs,$indAlmt,$indKontak,$indEmail,$indWebsite,$indFoto;
+    public $indNama,$indBidangUsaha,$indAlamat,$indKontak,$indEmail,$indWebsite,$indFoto;
     public $siswa_id, $industri_id, $guru_id, $mulai, $selesai;
 
     public $isOpen = 0;
@@ -62,31 +62,33 @@ class Index extends Component
     }
 
     private function resetInputFields(){
-        $this->indNama      ='';
-        $this->indBidUs   = '';
-        $this->indAlmt       = '';
-        $this->indKontak        ='';
-        $this->indEmail      = '';
-        $this->indWebsite      = '';
-        $this->indFoto      = '';
+        $this->indNama = '';
+        $this->indBidangUsaha = '';
+        $this->indAlamat = '';
+        $this->indKontak = '';
+        $this->indEmail = '';
+        $this->indWebsite = '';
+        $this->indFoto = '';
     }
 
     public function store()
     {
         $this->siswa_id = Siswa::where('email', $this->userMail)->first()->id ?? null;
-        $this->validate([
-                'industri_id'    => 'required',
-                'guru_id'        => 'required',
-                'mulai'         => 'required|date',
-                'selesai'       => 'required|date|after:mulai',
-                'indFoto'      => 'nullable|image|max:2048',
+
+            $this->validate([
+            'indNama' => 'required|string|max:255',
+            'indBidangUsaha' => 'required|string|max:255',
+            'indAlamat' => 'required|string',
+            'indKontak' => 'nullable|string|max:50',
+            'indEmail' => 'nullable|email',
+            'indWebsite' => 'nullable|url',
+            'indFoto' => 'nullable|image|max:2048',
             ]);
         
-        $pathFoto = null;
-
+        $fotoPath = null;
         if ($this->indFoto) {
-            $pathFoto = $this->indFoto->store('foto-industri', 'public');
-        }   
+            $fotoPath = $this->indFoto->store('foto-industri', 'public');
+        }  
         
 
         DB::beginTransaction();
@@ -103,13 +105,14 @@ class Index extends Component
             }
 
             // Simpan data PKL
-            Pkl::create([
-                'siswa_id'      => $this->siswa_id,
-                'industri_id'   => $this->industri_id,
-                'guru_id'       => $this->guru_id,
-                'mulai'         => $this->mulai,
-                'selesai'       => $this->selesai,
-                'foto'          => $pathFoto,
+            Industri::create([
+                'nama' => $this->indNama,
+                'bidang_usaha' => $this->indBidangUsaha,
+                'alamat' => $this->indAlamat,
+                'kontak' => $this->indKontak,
+                'email' => $this->indEmail,
+                'website' => $this->indWebsite,
+                'foto' => $fotoPath,
             ]);
 
             // Update status_lapor siswa
@@ -117,17 +120,17 @@ class Index extends Component
 
             DB::commit();
             
-            $this->closeModal();
             $this->resetInputFields();
+            $this->closeModal();
 
-            return redirect()->route('dashboard')->with('success', 'Data PKL berhasil disimpan dan status siswa diperbarui!');
+            return redirect()->route('industri')->with('success', 'Data PKL berhasil disimpan dan status siswa diperbarui!');
 
             
         }
         catch (\Exception $e) {
             DB::rollBack();
             $this->closeModal();
-            return redirect()->route('dashboard')->with('error', 'Terjadi kesalahan: ' . $e->getMessage());
+            return redirect()->route('industri')->with('error', 'Terjadi kesalahan: ' . $e->getMessage());
         }
     }
 }
